@@ -110,7 +110,9 @@ bool ListRoomByName(string name) {
   return found;
 }
 
-void Quit() {}
+void Quit() {
+  exit(0);
+}
 
 void addRoomDisplay() {
   int id;
@@ -189,8 +191,7 @@ void deleteRoomByNameDisplay() {
 
   if (!deleteRoomByName(named)) {
     cout << "Sorry couldn't delete the room [!]" << named << endl;
-  } else cout << "Room " << named << " deleted !"
-  endl;
+  } else cout << "Room " << named << " deleted !" << endl;
 
 }
 void listRoomByNameDisplay() {
@@ -216,11 +217,8 @@ int main() {
   addRoom(room2);
   addRoom(room3);
   addRoom(room4);
-  ListAllRooms();
 
-  cout << "we have  " << rooms.size() << " available roooms." << endl;
-  deleteRoomByName("Valencia");
-  ListAllRooms();
+  cout << "we have  " << rooms.size() << " available rooms." << endl;
 
   cout << "---------------------MENU-----------------------------" << endl;
   cout << "1- add a Room				        [+]" << endl;
@@ -229,33 +227,42 @@ int main() {
   cout << "4- List room with max area (length and width)   [+]" << endl;
   cout << "5- List rooms by Name                           [+]" << endl;
   cout << "6- Delete room by Name                          [+]" << endl;
+  cout << "7- List all Rooms                               [+]" << endl;
+  cout << "8- Quit                                         [+]" << endl;
 
-  int option;
-  cout << "[+]Enter your choice" << endl;
-  cin >> option;
-  switch (option) {
-  case 1:
-    addRoomDisplay();
-    break;
-  case 2:
-    updateHotelRoomDisplay();
-    break;
-  case 3:
-    searchByLengthWidthDisplay();
-    break;
-  case 4:
-    ListRoomWithMaxArea();
-    break;
-  case 5:
-    listRoomByNameDisplay();
-    break;
-  case 6:
-    deleteRoomByNameDisplay();
-    break;
+  while (1) {
 
-  default:
-    cout << "Please choose an appropriate choice !" << endl;
+    int option;
+    cout << "[+]Enter your choice" << endl;
+    cin >> option;
+    switch (option) {
+    case 1:
+      addRoomDisplay();
+      break;
+    case 2:
+      updateHotelRoomDisplay();
+      break;
+    case 3:
+      searchByLengthWidthDisplay();
+      break;
+    case 4:
+      ListRoomWithMaxArea();
+      break;
+    case 5:
+      listRoomByNameDisplay();
+      break;
+    case 6:
+      deleteRoomByNameDisplay();
+    case 7:
+      ListAllRooms();
+      break;
+    case 8:
+      Quit();
+      break;
+
+    default:
+      cout << "Please choose an appropriate choice !" << endl;
+    }
   }
-
   return 0;
 }
