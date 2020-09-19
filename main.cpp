@@ -59,44 +59,55 @@ bool updateRoomByName(string name, Room & m) { //new object
 
 }
 
-bool searchByLengthWidth(float length, float width) {
+bool searchByArea(float Area) {
   vector < Room > ::iterator itr;
-  bool elementFound=false;
+  bool elementFound = false;
   for (itr = rooms.begin(); itr != rooms.end(); ++itr) {
     //cout<<"searching..."<<itr->getLength();
-    if (itr -> getLength() == length && itr -> getWidth() == width) {
-      elementFound=true;	
+    if (itr -> getLength() * itr -> getWidth() == Area) {
+      elementFound = true;
       printRoom(itr);
     }
   }
- return elementFound;
+  return elementFound;
 }
 
 void ListRoomWithMaxArea() {
   vector < Room > ::iterator itr;
-  float maxlength = 0, maxwidth = 0;
+  float maxArea = 0;
   for (itr = rooms.begin(); itr != rooms.end(); ++itr) {
-    if (itr -> getLength() > maxlength && itr -> getWidth() > maxwidth) {
-      maxlength = itr -> getLength();
-      maxwidth = itr -> getWidth();
+    if (itr -> getLength() * itr -> getWidth() > maxArea) {
+      maxArea = itr -> getLength() * itr -> getWidth();
     }
   }
-  searchByLengthWidth(maxlength, maxwidth);
+  searchByArea(maxArea);
 
 }
 
+bool deleteRoomByName(string name) {
+  bool todelete = false;
+  for (size_t i = 0; i < rooms.size();) {
+    if (name.compare(rooms[i].getName()) == 0) {
+      todelete = true;
+      rooms[i] = rooms.back();
+      rooms.pop_back();
+    } else ++i;
+  }
+  return todelete;
+}
+
 bool ListRoomByName(string name) {
-	bool found=false;
+  bool found = false;
   vector < Room > ::iterator listIter;
   for (listIter = rooms.begin(); listIter != rooms.end(); ++listIter) {
     if (name.compare(listIter -> getName()) == 0) {
-      found=true;	
+      found = true;
       cout << "Room found..." << endl;
       printRoom(listIter);
     }
 
   }
-return found;
+  return found;
 }
 
 void Quit() {}
@@ -154,34 +165,44 @@ void updateHotelRoomDisplay() {
 
 }
 
-void searchByLengthWidthDisplay(){
-	 float lengthd,widthd;
-	 
-	 cout <<"[+] searching for a room by length and width [+]"<<endl;
-	 cout<<"[+]Enter length of the room"<<endl;
-	 cin>>lengthd;
-	 
-	 cout<<"[+] Enter width of the room"<<endl;
-	 cin >>widthd;
-	 
-	 if(!searchByLengthWidth(lengthd,widthd)){
-	  cout<<"No element found matching width"<< widthd<<" and length "<<lengthd<<endl;
-	 }
-	 
-	 
+void searchByLengthWidthDisplay() {
+  float lengthd, widthd;
+
+  cout << "[+] searching for a room by length and width [+]" << endl;
+  cout << "[+]Enter length of the room" << endl;
+  cin >> lengthd;
+
+  cout << "[+] Enter width of the room" << endl;
+  cin >> widthd;
+
+  if (!searchByArea(lengthd * widthd)) {
+    cout << "No element found matching Area  " << widthd * lengthd << endl;
+  }
+
 }
 
-void listRoomByNameDisplay(){
-	string named;
-	 cout <<"[+] searching for a room by Name [+]"<<endl;
-	 cout<<" What's the room's name?"<<endl;
-	 cin>>named;
-	 
-	 if(!ListRoomByName(named)){
-	 	cout<<"We are sorry No room found with name"<< named<<endl;
-	 }
-	 
-	
+void deleteRoomByNameDisplay() {
+  string named;
+  cout << "[+] searching for a room to delete [+]" << endl;
+  cout << " What's the room's name?" << endl;
+  cin >> named;
+
+  if (!deleteRoomByName(named)) {
+    cout << "Sorry couldn't delete the room [!]" << named << endl;
+  } else cout << "Room " << named << " deleted !"
+  endl;
+
+}
+void listRoomByNameDisplay() {
+  string named;
+  cout << "[+] searching for a room by Name [+]" << endl;
+  cout << " What's the room's name?" << endl;
+  cin >> named;
+
+  if (!ListRoomByName(named)) {
+    cout << "We are sorry No room found with name" << named << endl;
+  }
+
 }
 
 int main() {
@@ -195,27 +216,46 @@ int main() {
   addRoom(room2);
   addRoom(room3);
   addRoom(room4);
-  cout<<"we have  "<<rooms.size()<<" available roooms."<<endl; 
-  
-  cout<<"---------------------MENU-----------------"<<endl;
-  cout<<"1- add a Room									 [+]"<<endl;
-  cout<<"2- update hotel room details                    [+]"<<endl;
-  cout<<"3- search for a room by length and width        [+]"<<endl;
-  cout<<"4- List room with max area (length and width)   [+]"<<endl;
-  cout<<"5- List rooms by Name                           [+]"<<endl;
-  
-  int option;
-  cout<<"[+]Enter your choice"<<endl;
-  cin>>option;
-  switch(option){
-  	case 1:addRoomDisplay(); break;
-  	case 2:updateHotelRoomDisplay(); break;
-  	case 3:searchByLengthWidthDisplay(); break;
-  	case 4:ListRoomWithMaxArea(); break;
-  	case 5:listRoomByNameDisplay(); break;
-  	default: cout<<"Please choose an appropriate choice !"<<endl;
-  }
+  ListAllRooms();
 
+  cout << "we have  " << rooms.size() << " available roooms." << endl;
+  deleteRoomByName("Valencia");
+  ListAllRooms();
+
+  cout << "---------------------MENU-----------------------------" << endl;
+  cout << "1- add a Room				        [+]" << endl;
+  cout << "2- update hotel room details                    [+]" << endl;
+  cout << "3- search for a room by length and width        [+]" << endl;
+  cout << "4- List room with max area (length and width)   [+]" << endl;
+  cout << "5- List rooms by Name                           [+]" << endl;
+  cout << "6- Delete room by Name                          [+]" << endl;
+
+  int option;
+  cout << "[+]Enter your choice" << endl;
+  cin >> option;
+  switch (option) {
+  case 1:
+    addRoomDisplay();
+    break;
+  case 2:
+    updateHotelRoomDisplay();
+    break;
+  case 3:
+    searchByLengthWidthDisplay();
+    break;
+  case 4:
+    ListRoomWithMaxArea();
+    break;
+  case 5:
+    listRoomByNameDisplay();
+    break;
+  case 6:
+    deleteRoomByNameDisplay();
+    break;
+
+  default:
+    cout << "Please choose an appropriate choice !" << endl;
+  }
 
   return 0;
 }
