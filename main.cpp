@@ -59,15 +59,17 @@ bool updateRoomByName(string name, Room & m) { //new object
 
 }
 
-void searchByLengthWidth(float length, float width) {
+bool searchByLengthWidth(float length, float width) {
   vector < Room > ::iterator itr;
-
+  bool elementFound=false;
   for (itr = rooms.begin(); itr != rooms.end(); ++itr) {
     //cout<<"searching..."<<itr->getLength();
     if (itr -> getLength() == length && itr -> getWidth() == width) {
+      elementFound=true;	
       printRoom(itr);
     }
   }
+ return elementFound;
 }
 
 void ListRoomWithMaxArea() {
@@ -83,15 +85,18 @@ void ListRoomWithMaxArea() {
 
 }
 
-void ListRoomByName(string name) {
+bool ListRoomByName(string name) {
+	bool found=false;
   vector < Room > ::iterator listIter;
   for (listIter = rooms.begin(); listIter != rooms.end(); ++listIter) {
     if (name.compare(listIter -> getName()) == 0) {
+      found=true;	
       cout << "Room found..." << endl;
       printRoom(listIter);
     }
 
   }
+return found;
 }
 
 void Quit() {}
@@ -149,6 +154,36 @@ void updateHotelRoomDisplay() {
 
 }
 
+void searchByLengthWidthDisplay(){
+	 float lengthd,widthd;
+	 
+	 cout <<"[+] searching for a room by length and width [+]"<<endl;
+	 cout<<"[+]Enter length of the room"<<endl;
+	 cin>>lengthd;
+	 
+	 cout<<"[+] Enter width of the room"<<endl;
+	 cin >>widthd;
+	 
+	 if(!searchByLengthWidth(lengthd,widthd)){
+	  cout<<"No element found matching width"<< widthd<<" and length "<<lengthd<<endl;
+	 }
+	 
+	 
+}
+
+void listRoomByNameDisplay(){
+	string named;
+	 cout <<"[+] searching for a room by Name [+]"<<endl;
+	 cout<<" What's the room's name?"<<endl;
+	 cin>>named;
+	 
+	 if(!ListRoomByName(named)){
+	 	cout<<"We are sorry No room found with name"<< named<<endl;
+	 }
+	 
+	
+}
+
 int main() {
 
   Room room1(1, "Valencia", 23.1, 23.1, "Blue");
@@ -159,15 +194,28 @@ int main() {
   addRoom(room1);
   addRoom(room2);
   addRoom(room3);
-  cout << "Vector size is:" << rooms.size() << endl;
+  addRoom(room4);
+  cout<<"we have  "<<rooms.size()<<" available roooms."<<endl; 
+  
+  cout<<"---------------------MENU-----------------"<<endl;
+  cout<<"1- add a Room									 [+]"<<endl;
+  cout<<"2- update hotel room details                    [+]"<<endl;
+  cout<<"3- search for a room by length and width        [+]"<<endl;
+  cout<<"4- List room with max area (length and width)   [+]"<<endl;
+  cout<<"5- List rooms by Name                           [+]"<<endl;
+  
+  int option;
+  cout<<"[+]Enter your choice"<<endl;
+  cin>>option;
+  switch(option){
+  	case 1:addRoomDisplay(); break;
+  	case 2:updateHotelRoomDisplay(); break;
+  	case 3:searchByLengthWidthDisplay(); break;
+  	case 4:ListRoomWithMaxArea(); break;
+  	case 5:listRoomByNameDisplay(); break;
+  	default: cout<<"Please choose an appropriate choice !"<<endl;
+  }
 
-  //updateRoomByName("Royal Flamingo",room3);
-  //searchByLengthWidth(40.1,30.1);
-  //ListRoomWithMaxArea();
-  //ListRoomByName("Valencia");
-
-  // addRoomDisplay();
-  updateHotelRoomDisplay();
 
   return 0;
 }
