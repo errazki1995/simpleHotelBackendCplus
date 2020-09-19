@@ -68,6 +68,11 @@ void Room::setColor(string color1){
 }
 
 
+std::ostream& operator<<(ostream& ost,const Room& r){
+	ost<<"Room id:"<<r.id<<" Name: "<<r.name<<" length:<"<<r.length<<"> width <"<<r.width<<"> color : ["<<r.color<<"]"<<endl;
+    return ost;	
+} 
+
 Room::~Room(){
 	//cout<<"Destructing the room !"<<endl;
 }

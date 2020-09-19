@@ -30,6 +30,9 @@ public:
 		void setWidth(float width);
 		void setLength(float length);
 		void setColor(string color);
+		//ostream operator
+		friend ostream& operator<<(ostream& ost,const Room& r);
+
 		//dest
 	    ~Room();
 
